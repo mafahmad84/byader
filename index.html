@@ -103,14 +103,11 @@
       border-radius: 10px;
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr;
-      gap:14px;
-    }
-    @media (min-width: 980px){
-      .grid{ grid-template-columns: 1fr 1fr; }
-    }
+   .grid{
+  display:grid;
+  grid-template-columns: 1fr; /* عمود واحد دائماً */
+  gap:14px;
+}
 
     .card{
       background:var(--card);
@@ -383,7 +380,7 @@
 
 <body>
 <header>
-  <h1>مدرسة البيادر الابتدائية - حوره</h1>
+  <h1>مدرسة البيادر الابتدائية - حورة</h1>
   <h3>برنامج التعلم عن بُعد</h3>
 </header>
 
@@ -404,14 +401,17 @@
     </div>
 
     <div style="flex-basis:100%" class="note">
-   <mark><b>للمزيد من التفاصيل أو بحالة واجهتم مشكلة، يمكنكم التوجه لمركّز الحوسبة في المدرسة</b></mark>
+      <mark><b>للمزيد من التفاصيل أو بحالة واجهتم مشكلة، يمكنكم التوجه لمركّز/ة الحوسبة في المدرسة.</b></mark>
+      <div style="margin-top:6px;color:#64748b">
+        📱 على الهاتف: اسحبوا الجدول يمين/يسار لرؤية باقي الأيام.
+      </div>
     </div>
   </div>
 
   <div class="grid" id="tablesContainer"></div>
 
   <div class="footerHint">
-    © مدرسة البيادر الابتدائية 
+    © مدرسة البيادر الابتدائية — صفحة عرض جدول التعليم عن بُعد
   </div>
 </div>
 
