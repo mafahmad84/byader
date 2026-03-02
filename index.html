@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>مدرسة البيادر الابتدائيه</title>
+  <style>
+    :root{
+      --bg1:#f7fbff;
+      --bg2:#fff7fb;
+      --card:#ffffffcc;
+      --ink:#1f2a37;
+      --muted:#6b7280;
+      --line:#e5e7eb;
+      --shadow: 0 12px 30px rgba(0,0,0,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, "Segoe UI", Tahoma, Arial, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 10% 10%, #dbeafe 0%, transparent 60%),
+        radial-gradient(1000px 500px at 90% 20%, #fce7f3 0%, transparent 55%),
+        linear-gradient(180deg, var(--bg1), var(--bg2));
+      min-height:100vh;
+    }
+    header{ padding:22px 14px 10px; text-align:center; }
+    header h1{ margin:0; font-size:22px; letter-spacing:.2px; }
+    header h3{ margin:10px 0 0; font-weight:800; color:#0f172a; }
+
+    .wrap{
+      width:min(1200px, 96vw);
+      margin: 10px auto 30px;
+      display:grid;
+      gap:14px;
+    }
+    .toolbar{
+      background:var(--card);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      border-radius: var(--radius);
+      padding:14px;
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+    }
+    .toolbar .left, .toolbar .right{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius: 999px;
+      background:#fff;
+      font-size:14px;
+    }
+    input[type="password"]{
+      border:1px solid var(--line);
+      border-radius: 999px;
+      padding:10px 12px;
+      outline:none;
+      font-size:14px;
+      width: 190px;
+    }
+    button{
+      border:0;
+      border-radius: 999px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-size:14px;
+      transition:.15s transform, .15s opacity;
+      box-shadow: 0 8px 18px rgba(0,0,0,.08);
+      background:#111827;
+      color:#fff;
+    }
+    button:hover{transform: translateY(-1px); opacity:.95}
+    button.secondary{
+      background:#ffffff;
+      color:#111827;
+      border:1px solid var(--line);
+      box-shadow:none;
+    }
+    button.danger{ background:#b91c1c; }
+
+    .note{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.8;
+    }
+    .note mark{
+      background: #fff3bf;
+      padding: 2px 6px;
+      border-radius: 10px;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap:14px;
+    }
+    @media (min-width: 980px){
+      .grid{ grid-template-columns: 1fr 1fr; }
+    }
+
+    .card{
+      background:var(--card);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      border-radius: var(--radius);
+      overflow:hidden;
+    }
+    .cardHead{
+      padding:14px 14px 10px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      border-bottom:1px solid var(--line);
+      background: linear-gradient(90deg, #ffffff, #f8fafc);
+    }
+    .cardHead h2{ margin:0; font-size:16px; }
+    .badge{
+      font-size:12px;
+      color:#0f172a;
+      background:#fff;
+      border:1px solid var(--line);
+      padding:6px 10px;
+      border-radius:999px;
+      white-space:nowrap;
+    }
+
+    /* ✅ لفّ الجدول داخل حاوية تسمح بالسحب يمين/يسار */
+    .tableWrap{
+      width:100%;
+      overflow-x:auto;
+      -webkit-overflow-scrolling: touch;
+      background:#fff;
+    }
+
+    table{ width:100%; border-collapse:collapse; background:#fff; }
+    thead th{
+      position:sticky;
+      top:0;
+      z-index:1;
+      background:#f8fafc;
+      border-bottom:1px solid var(--line);
+      font-size:13px;
+      padding:10px;
+      text-align:center;
+    }
+    tbody td{
+      border-bottom:1px solid #f1f5f9;
+      padding:10px;
+      vertical-align:top;
+      font-size:13px;
+    }
+    tbody tr:hover td{ background:#fbfdff; }
+
+    .periodCell{
+      text-align:center;
+      font-weight:800;
+      width: 150px;
+      color:#0f172a;
+      white-space:nowrap;
+    }
+    .smallTime{
+      display:block;
+      margin-top:4px;
+      font-weight:700;
+      color:#334155;
+      font-size:12px;
+    }
+
+    .prepRow td{ background: #f8fafc; }
+    .prepText{
+      font-weight:800;
+      color:#0f172a;
+      text-align:center;
+      padding:14px 10px !important;
+      min-width: 120px;
+    }
+
+    .cellBox{
+      display:flex;
+      flex-direction:column;
+      gap:6px;
+      min-height:64px;
+      min-width: 140px;
+    }
+    .topic{
+      font-weight:800;
+      color:#0f172a;
+      line-height:1.4;
+      word-break:break-word;
+    }
+
+    .details{
+      color:var(--muted);
+      line-height:1.5;
+      display:-webkit-box;
+      -webkit-line-clamp:3;
+      -webkit-box-orient:vertical;
+      overflow:hidden;
+      text-overflow:ellipsis;
+      max-height:4.5em;
+      white-space:pre-wrap;
+      word-break:break-word;
+    }
+
+    .empty{
+      color:#94a3b8;
+      font-style:italic;
+    }
+
+    .editBtn{
+      margin-top:6px;
+      align-self:flex-start;
+      padding:8px 12px;
+      font-size:13px;
+      background:#0f172a;
+    }
+
+    .actionBtn{
+      margin-top:6px;
+      padding:8px 12px;
+      border-radius:999px;
+      text-decoration:none;
+      display:inline-block;
+      font-size:13px;
+      font-weight:700;
+      color:white;
+      width: fit-content;
+    }
+    .joinBtn{ background:#16a34a; }
+    .fileBtn{ background:#2563eb; }
+
+    .showMoreBtn{
+      margin-top:6px;
+      background:#0f172a;
+      color:white;
+      padding:6px 10px;
+      border-radius:999px;
+      font-size:12px;
+      cursor:pointer;
+      border:none;
+      width: fit-content;
+    }
+
+    /* Modals */
+    .modalBack{
+      position:fixed;
+      inset:0;
+      background: rgba(15, 23, 42, .55);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:14px;
+      z-index: 9999;
+    }
+    .modal{
+      width:min(720px, 98vw);
+      background:#fff;
+      border-radius: 18px;
+      box-shadow: 0 18px 60px rgba(0,0,0,.25);
+      overflow:hidden;
+      border:1px solid rgba(255,255,255,.35);
+    }
+    .modalHead{
+      padding:14px;
+      border-bottom:1px solid var(--line);
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:10px;
+      background: linear-gradient(90deg, #eff6ff, #fdf2f8);
+    }
+    .modalHead h3{ margin:0; font-size:16px; }
+    .modalBody{ padding:14px; display:grid; gap:10px; }
+    textarea, .modalBody input[type="text"]{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      font-size:14px;
+      outline:none;
+      resize:vertical;
+    }
+    .modalBody input[type="file"]{
+      width:100%;
+      border:1px dashed var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      background:#f8fafc;
+    }
+    textarea{ min-height:120px; }
+    .modalFoot{
+      padding:14px;
+      border-top:1px solid var(--line);
+      display:flex;
+      gap:10px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+      background:#fafafa;
+    }
+
+    .viewBox{
+      background:#f8fafc;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:12px;
+      white-space:pre-wrap;
+      line-height:1.7;
+      color:#0f172a;
+      max-height: 50vh;
+      overflow:auto;
+    }
+
+    .footerHint{
+      text-align:center;
+      color:var(--muted);
+      font-size:12px;
+      padding: 4px 0 18px;
+    }
+
+    /* ================= MOBILE VERSION ================= */
+    @media (max-width: 768px){
+      header{ padding:18px 12px 8px; }
+      header h1{ font-size:18px; }
+      header h3{ font-size:14px; }
+
+      .wrap{ width:95vw; margin-top:6px; }
+
+      .toolbar{ padding:12px; }
+      .toolbar .left, .toolbar .right{
+        width:100%;
+        justify-content:center;
+      }
+      input[type="password"]{ width:min(280px, 90vw); }
+
+      .grid{ grid-template-columns: 1fr !important; }
+
+      table{ min-width: 860px; }
+
+      thead th{ font-size:14px; padding:12px; }
+      tbody td{ font-size:14px; padding:12px; }
+
+      button, .actionBtn, .editBtn{
+        padding:10px 14px;
+        font-size:14px;
+      }
+
+      .periodCell{ width:130px; font-size:14px; }
+      .smallTime{ font-size:12px; }
+
+      .details{ font-size:14px; line-height:1.7; }
+      .cellBox{ min-width: 160px; }
+    }
+
+    @media print{
+      header, .toolbar, .footerHint, .editBtn, .badge { display:none !important; }
+      body{ background:#fff; }
+      .card{ box-shadow:none; border:1px solid #ddd; }
+      thead th{ position:static; }
+      .wrap{ width: 100%; }
+      .grid{ grid-template-columns: 1fr; }
+      .actionBtn, .showMoreBtn{ display:none !important; }
+      .details{ -webkit-line-clamp: 100; max-height:none; overflow:visible; }
+      .tableWrap{ overflow:visible; }
+      table{ min-width: 0 !important; }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>مدرسة البيادر الابتدائية - حوره</h1>
+  <h3>برنامج التعلم عن بُعد</h3>
+</header>
+
+<div class="wrap">
+  <div class="toolbar">
+    <div class="left">
+      <span class="pill" id="adminStatus">وضع الأدمن: <b>مغلق</b></span>
+      <input id="adminPass" type="password" placeholder="أدخل كلمة مرور الأدمن" />
+      <button id="btnLogin">تفعيل الأدمن</button>
+      <button id="btnLogout" class="secondary" style="display:none;">إلغاء الأدمن</button>
+    </div>
+
+    <div class="right">
+      <button id="btnPrint" class="secondary">طباعة</button>
+      <button id="btnExport" class="secondary" style="display:none;">تصدير البيانات (JSON)</button>
+      <button id="btnImport" class="secondary" style="display:none;">استيراد (JSON)</button>
+      <button id="btnReset" class="danger" style="display:none;">مسح جميع الحصص</button>
+    </div>
+
+    <div style="flex-basis:100%" class="note">
+   <mark><b>للمزيد من التفاصيل أو بحالة واجهتم مشكلة، يمكنكم التوجه لمركّز الحوسبة في المدرسة</b></mark>
+    </div>
+  </div>
+
+  <div class="grid" id="tablesContainer"></div>
+
+  <div class="footerHint">
+    © مدرسة البيادر الابتدائية 
+  </div>
+</div>
+
+<!-- Modal (تحرير) -->
+<div class="modalBack" id="modalBackEdit">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modalHead">
+      <h3 id="modalTitle">تعديل الحصة</h3>
+      <button class="secondary" id="btnCloseModal">إغلاق</button>
+    </div>
+
+    <div class="modalBody">
+      <label>
+        <b>موضوع الحصة</b>
+        <input type="text" id="inpTopic" placeholder="مثال: لغة عربية / مهارة رقمية..." />
+      </label>
+
+      <label>
+        <b>تفاصيل الدرس</b>
+        <textarea id="inpDetails" placeholder="اكتب تفاصيل الدرس هنا..."></textarea>
+      </label>
+
+      <label>
+        <b>رابط الحصة (Google Meet أو موقع)</b>
+        <input type="text" id="inpLink" placeholder="https://..." />
+      </label>
+
+      <label>
+        <b>رفع ملفات للطلاب (PDF/Word/صور...)</b>
+        <input type="file" id="inpFiles" multiple />
+      </label>
+
+      <div class="note">
+        ✅ التفاصيل تظهر مختصرة داخل الجدول وبزر "عرض التفاصيل" تُعرض كاملة.
+      </div>
+    </div>
+
+    <div class="modalFoot">
+      <button class="danger" id="btnClearCell">تفريغ هذه الخانة</button>
+      <button class="secondary" id="btnCancel">إلغاء</button>
+      <button id="btnSave">حفظ</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal (عرض التفاصيل) -->
+<div class="modalBack" id="modalBackView">
+  <div class="modal" role="dialog" aria-modal="true">
+    <div class="modalHead">
+      <h3 id="viewTitle">تفاصيل الدرس</h3>
+      <button class="secondary" id="btnCloseView">إغلاق</button>
+    </div>
+    <div class="modalBody">
+      <div class="viewBox" id="viewContent"></div>
+    </div>
+    <div class="modalFoot">
+      <button class="secondary" id="btnCopyDetails">نسخ التفاصيل</button>
+      <button id="btnOkView">حسناً</button>
+    </div>
+  </div>
+</div>
+
+<input type="file" id="fileInput" accept="application/json" style="display:none;" />
+
+<script>
+/* ==========================
+   إعدادات أساسية
+========================== */
+const ADMIN_PASSWORD = "admin123";
+
+const DAYS = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس"];
+const DAY_KEYS = ["sun","mon","tue","wed","thu"];
+const PREP_TEXT = "الاستعداد للدروس وإعداد اللوازم المطلوبة";
+
+const PERIODS = [
+  { id: "p1", label: "الحصة 1", time: "09:00–09:45" },
+  { id: "p2", label: "الحصة 2", time: "10:00–10:45" },
+  { id: "p3", label: "الحصة 3", time: "11:00–11:45" },
+  { id: "p4", label: "الحصة 4", time: "12:00–12:45" }
+];
+
+const CLASSES = [
+  { id:"g4", name:"الصف الرابع" },
+  { id:"g5", name:"الصف الخامس" },
+  { id:"g6", name:"الصف السادس" },
+  { id:"gX", name:"صف إضافي" }
+];
+
+/* ✅ مهم: لا تغيّر هذا الاسم مستقبلاً حتى لا تضيع البيانات */
+const STORAGE_KEY = "remote_weekly_schedule_v5";
+
+/* ✅ مفاتيح احتياطية لو كنت استخدمت نسخ مختلفة */
+const STORAGE_KEYS_FALLBACK = [
+  "remote_weekly_schedule_v5",
+  "remote_weekly_schedule_v6",
+  "remote_weekly_schedule_v4",
+  "remote_weekly_schedule_v3"
+];
+
+/* ==========================
+   الحالة
+========================== */
+let isAdmin = false;
+let state = loadState();
+
+function requireAdmin(actionName){
+  if(!isAdmin){
+    alert("هذه العملية مسموحة للأدمن فقط.");
+    throw new Error("Not admin: " + actionName);
+  }
+}
+
+function emptyCell(){
+  return { topic:"", details:"", link:"", files:[] };
+}
+
+function buildEmptyState(){
+  const s = {};
+  for(const c of CLASSES){
+    s[c.id] = {};
+    for(const p of PERIODS){
+      s[c.id][p.id] = {};
+      for(const dk of DAY_KEYS){
+        s[c.id][p.id][dk] = emptyCell();
+      }
+    }
+  }
+  return s;
+}
+
+/* ✅ تحميل مع استرجاع تلقائي من مفاتيح قديمة */
+function loadState(){
+  try{
+    let raw = null;
+    let usedKey = null;
+
+    for(const k of STORAGE_KEYS_FALLBACK){
+      const v = localStorage.getItem(k);
+      if(v && v.trim()){
+        raw = v;
+        usedKey = k;
+        break;
+      }
+    }
+
+    if(!raw) return buildEmptyState();
+    const parsed = JSON.parse(raw);
+
+    const base = buildEmptyState();
+    for(const c of CLASSES){
+      if(parsed?.[c.id]){
+        for(const p of PERIODS){
+          if(parsed[c.id]?.[p.id]){
+            for(const dk of DAY_KEYS){
+              if(parsed[c.id][p.id]?.[dk]){
+                const cell = parsed[c.id][p.id][dk];
+                base[c.id][p.id][dk] = {
+                  topic: cell.topic || "",
+                  details: cell.details || "",
+                  link: cell.link || "",
+                  files: Array.isArray(cell.files) ? cell.files : []
+                };
+              }
+            }
+          }
+        }
+      }
+    }
+
+    /* ✅ إذا كانت البيانات بمفتاح قديم انقلها للمفتاح الأساسي مرة واحدة */
+    if(usedKey && usedKey !== STORAGE_KEY){
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(base)); }catch{}
+    }
+
+    return base;
+  }catch(e){
+    return buildEmptyState();
+  }
+}
+
+/* ✅ حفظ مع تنبيه إذا فشل بسبب امتلاء المساحة */
+function saveState(){
+  try{
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    return true;
+  }catch(e){
+    alert(
+      "تنبيه: لم يتم حفظ التحديث لأن مساحة التخزين امتلأت.\n" +
+      "جرّب تصدير البيانات كنسخة احتياطية، أو قلّل الملفات الكبيرة داخل الحصص."
+    );
+    return false;
+  }
+}
+
+function normalizeUrl(url){
+  const u = (url || "").trim();
+  if(!u) return "";
+  if(/^https?:\/\//i.test(u)) return u;
+  return "https://" + u;
+}
+
+function fileToBase64(file){
+  return new Promise((resolve)=>{
+    const reader = new FileReader();
+    reader.onload = ()=> resolve(reader.result);
+    reader.readAsDataURL(file);
+  });
+}
+
+/* ==========================
+   عرض التفاصيل (Modal View)
+========================== */
+const modalBackView = document.getElementById("modalBackView");
+const viewTitle = document.getElementById("viewTitle");
+const viewContent = document.getElementById("viewContent");
+let lastViewedText = "";
+
+function openViewModal(title, text){
+  viewTitle.textContent = title || "تفاصيل الدرس";
+  viewContent.textContent = text || "";
+  lastViewedText = text || "";
+  modalBackView.style.display = "flex";
+}
+function closeViewModal(){
+  modalBackView.style.display = "none";
+  lastViewedText = "";
+}
+document.getElementById("btnCloseView").addEventListener("click", closeViewModal);
+document.getElementById("btnOkView").addEventListener("click", closeViewModal);
+modalBackView.addEventListener("click", (e)=>{ if(e.target === modalBackView) closeViewModal(); });
+document.getElementById("btnCopyDetails").addEventListener("click", async ()=>{
+  try{
+    await navigator.clipboard.writeText(lastViewedText || "");
+    alert("تم نسخ التفاصيل.");
+  }catch{
+    alert("لم أستطع النسخ تلقائياً.");
+  }
+});
+
+/* ==========================
+   رسم الجداول
+========================== */
+const container = document.getElementById("tablesContainer");
+
+function updateAdminUI(){
+  document.getElementById("adminStatus").innerHTML = `وضع الأدمن: <b>${isAdmin ? "مفعّل" : "مغلق"}</b>`;
+  document.getElementById("btnLogout").style.display = isAdmin ? "inline-block" : "none";
+  document.getElementById("btnExport").style.display = isAdmin ? "inline-block" : "none";
+  document.getElementById("btnImport").style.display = isAdmin ? "inline-block" : "none";
+  document.getElementById("btnReset").style.display  = isAdmin ? "inline-block" : "none";
+}
+
+function render(){
+  container.innerHTML = "";
+
+  for(const cls of CLASSES){
+    const card = document.createElement("div");
+    card.className = "card";
+
+    const head = document.createElement("div");
+    head.className = "cardHead";
+    head.innerHTML = `
+      <h2>${cls.name}</h2>
+      <span class="badge">أسبوعي • سطر استعداد + 4 حصص • الأحد–الخميس</span>
+    `;
+    card.appendChild(head);
+
+    const tableWrap = document.createElement("div");
+    tableWrap.className = "tableWrap";
+
+    const table = document.createElement("table");
+
+    const thead = document.createElement("thead");
+    const trh = document.createElement("tr");
+    const th0 = document.createElement("th");
+    th0.textContent = "الحصة / التوقيت";
+    trh.appendChild(th0);
+
+    for(const day of DAYS){
+      const th = document.createElement("th");
+      th.textContent = day;
+      trh.appendChild(th);
+    }
+    thead.appendChild(trh);
+    table.appendChild(thead);
+
+    const tbody = document.createElement("tbody");
+
+    const trPrep = document.createElement("tr");
+    trPrep.className = "prepRow";
+
+    const tdPrepLabel = document.createElement("td");
+    tdPrepLabel.className = "periodCell";
+    tdPrepLabel.innerHTML = `الاستعداد<span class="smallTime">قبل الدروس</span>`;
+    trPrep.appendChild(tdPrepLabel);
+
+    for(let di=0; di<5; di++){
+      const td = document.createElement("td");
+      td.className = "prepText";
+      td.textContent = PREP_TEXT;
+      trPrep.appendChild(td);
+    }
+    tbody.appendChild(trPrep);
+
+    for(const p of PERIODS){
+      const tr = document.createElement("tr");
+
+      const tdP = document.createElement("td");
+      tdP.className = "periodCell";
+      tdP.innerHTML = `${p.label}<span class="smallTime">${p.time}</span>`;
+      tr.appendChild(tdP);
+
+      for(let di=0; di<5; di++){
+        const dk = DAY_KEYS[di];
+        const cell = state[cls.id][p.id][dk] || emptyCell();
+
+        const td = document.createElement("td");
+        const box = document.createElement("div");
+        box.className = "cellBox";
+
+        const hasAny = !!(cell.topic || cell.details || cell.link || (cell.files && cell.files.length));
+        if(hasAny){
+          const topic = document.createElement("div");
+          topic.className = "topic";
+          topic.textContent = cell.topic ? cell.topic : "بدون عنوان";
+          box.appendChild(topic);
+
+          if(cell.details){
+            const details = document.createElement("div");
+            details.className = "details";
+            details.textContent = cell.details;
+            box.appendChild(details);
+
+            const showBtn = document.createElement("button");
+            showBtn.className = "showMoreBtn";
+            showBtn.textContent = "عرض التفاصيل";
+            showBtn.onclick = ()=> {
+              const title = `${cls.name} • ${p.label} (${p.time}) • ${DAYS[di]}`;
+              openViewModal(title, cell.details);
+            };
+            box.appendChild(showBtn);
+          }
+
+          if(cell.link){
+            const a = document.createElement("a");
+            a.href = cell.link;
+            a.target = "_blank";
+            a.rel = "noopener";
+            a.className = "actionBtn joinBtn";
+            a.textContent = "الدخول إلى الدرس";
+            box.appendChild(a);
+          }
+
+          if(Array.isArray(cell.files) && cell.files.length){
+            cell.files.forEach(f=>{
+              if(!f?.data || !f?.name) return;
+              const a = document.createElement("a");
+              a.href = f.data;
+              a.download = f.name;
+              a.className = "actionBtn fileBtn";
+              a.textContent = "تحميل: " + f.name;
+              box.appendChild(a);
+            });
+          }
+        }else{
+          const empty = document.createElement("div");
+          empty.className = "empty";
+          empty.textContent = "— لا توجد حصة —";
+          box.appendChild(empty);
+        }
+
+        if(isAdmin){
+          const btn = document.createElement("button");
+          btn.className = "editBtn";
+          btn.textContent = "تعديل / إضافة";
+          btn.onclick = ()=> openModal(cls.id, p.id, dk, cls.name, p.label, DAYS[di], p.time);
+          box.appendChild(btn);
+        }
+
+        td.appendChild(box);
+        tr.appendChild(td);
+      }
+
+      tbody.appendChild(tr);
+    }
+
+    table.appendChild(tbody);
+    tableWrap.appendChild(table);
+    card.appendChild(tableWrap);
+    container.appendChild(card);
+  }
+
+  updateAdminUI();
+}
+
+/* الأدمن */
+document.getElementById("btnLogin").addEventListener("click", ()=>{
+  const pass = document.getElementById("adminPass").value.trim();
+  if(pass === ADMIN_PASSWORD){
+    isAdmin = true;
+    document.getElementById("adminPass").value = "";
+    render();
+  }else{
+    alert("كلمة المرور غير صحيحة.");
+  }
+});
+
+document.getElementById("btnLogout").addEventListener("click", ()=>{
+  isAdmin = false;
+  render();
+});
+
+/* طباعة */
+document.getElementById("btnPrint").addEventListener("click", ()=> window.print());
+
+/* تصدير/استيراد/مسح (أدمن فقط) */
+document.getElementById("btnReset").addEventListener("click", ()=>{
+  requireAdmin("reset");
+  const ok = confirm("هل أنت متأكد؟ سيتم مسح جميع الحصص في كل الصفوف.");
+  if(!ok) return;
+  state = buildEmptyState();
+  saveState();
+  render();
+});
+
+document.getElementById("btnExport").addEventListener("click", ()=>{
+  requireAdmin("export");
+  const dataStr = JSON.stringify(state, null, 2);
+  const blob = new Blob([dataStr], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "weekly-schedule.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+});
+
+document.getElementById("btnImport").addEventListener("click", ()=>{
+  requireAdmin("import");
+  document.getElementById("fileInput").click();
+});
+
+document.getElementById("fileInput").addEventListener("change", (e)=>{
+  requireAdmin("import-file");
+  const file = e.target.files?.[0];
+  if(!file) return;
+
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const parsed = JSON.parse(reader.result);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(parsed));
+      state = loadState();
+      render();
+      alert("تم الاستيراد بنجاح.");
+    }catch(err){
+      alert("الملف غير صالح. تأكد أنه JSON صحيح.");
+    }
+  };
+  reader.readAsText(file, "utf-8");
+  e.target.value = "";
+});
+
+/* نافذة التعديل */
+const modalBackEdit = document.getElementById("modalBackEdit");
+const inpTopic = document.getElementById("inpTopic");
+const inpDetails = document.getElementById("inpDetails");
+const inpLink = document.getElementById("inpLink");
+const inpFiles = document.getElementById("inpFiles");
+const modalTitle = document.getElementById("modalTitle");
+let currentEdit = null;
+
+function openModal(classId, periodId, dayKey, className, periodLabel, dayName, time){
+  currentEdit = { classId, periodId, dayKey };
+  const cell = state[classId][periodId][dayKey] || emptyCell();
+  inpTopic.value = cell.topic || "";
+  inpDetails.value = cell.details || "";
+  inpLink.value = cell.link || "";
+  inpFiles.value = "";
+  modalTitle.textContent = `تعديل: ${className} • ${periodLabel} (${time}) • ${dayName}`;
+  modalBackEdit.style.display = "flex";
+}
+
+function closeModal(){
+  modalBackEdit.style.display = "none";
+  currentEdit = null;
+}
+document.getElementById("btnCloseModal").addEventListener("click", closeModal);
+document.getElementById("btnCancel").addEventListener("click", closeModal);
+modalBackEdit.addEventListener("click", (e)=>{ if(e.target === modalBackEdit) closeModal(); });
+
+document.getElementById("btnSave").addEventListener("click", async ()=>{
+  requireAdmin("save-lesson");
+  if(!currentEdit) return;
+
+  const topic = inpTopic.value.trim();
+  const details = inpDetails.value.trim();
+  const link = normalizeUrl(inpLink.value);
+
+  const prev = state[currentEdit.classId][currentEdit.periodId][currentEdit.dayKey] || emptyCell();
+  const newFiles = [];
+
+  for(const file of inpFiles.files){
+    const base64 = await fileToBase64(file);
+    newFiles.push({ name: file.name, data: base64 });
+  }
+
+  state[currentEdit.classId][currentEdit.periodId][currentEdit.dayKey] = {
+    topic, details, link,
+    files: [...(prev.files || []), ...newFiles]
+  };
+
+  if(saveState()){
+    closeModal();
+    render();
+  }
+});
+
+document.getElementById("btnClearCell").addEventListener("click", ()=>{
+  requireAdmin("clear-cell");
+  if(!currentEdit) return;
+
+  const ok = confirm("تفريغ هذه الخانة فقط (موضوع + تفاصيل + رابط + ملفات)؟");
+  if(!ok) return;
+
+  state[currentEdit.classId][currentEdit.periodId][currentEdit.dayKey] = emptyCell();
+  saveState();
+  closeModal();
+  render();
+});
+
+/* ESC يغلق النوافذ */
+document.addEventListener("keydown", (e)=>{
+  if(e.key === "Escape"){
+    if(modalBackEdit.style.display === "flex") closeModal();
+    if(modalBackView.style.display === "flex") closeViewModal();
+  }
+});
+
+/* تشغيل */
+render();
+</script>
+
+</body>
+</html>
